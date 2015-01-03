@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %title
+      Chinese-English Dictionary
+  %body
+    %form{ :method => "get",
+           :action => "/lookup" }
+      %input{ :type => "text",
+              :name => "query",
+              :placeholder => "Search in Chinese" }
+      %button{ :type => "submit" }
+        Search
+      %a{ :href => "/random" } Random
+    - if entries
+      %h1= key.scan(/./).map { |c| "<a href='/lookup?query=#{c}'>#{c}</a>" }.join
+      - for entry in entries
+        %p= entry["pinyin"]
+        %ol
+          - for definition in entry["definition"].split(';')
+            %li= definition
+      %h2 Related Words
+      %ul
+        - for entry in related
+          %li= "<a href='/lookup?query=#{entry}'>#{entry}</a>"
+    
+    - else
+      %h1 Not Found
